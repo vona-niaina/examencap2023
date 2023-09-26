@@ -1,0 +1,35 @@
+.fizarana2{
+    margin-left: 15%;
+    
+}
+.fizarana21{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    top: 10%;
+    border: red;
+}
+
+.infoCandidat{
+    /* border: dotted blue; */
+    width: 40%;
+}
+
+.infoDiplome{
+    /* border: dotted rgb(144, 172, 20); */
+    width: 50%;
+}
+
+.welcome-admin{
+    background-color: #111;
+    padding: 15px;
+    text-align: center;
+    color: #f1f1f1;
+   
+}
+
+.dossierCandidat0{
+    max-width: 80%;
+    /* height: 20vh; */
+}
+

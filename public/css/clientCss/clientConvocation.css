@@ -1,0 +1,17 @@
+.fiandohany{
+    position: relative;
+    margin-top: 7%;
+    margin-bottom: 4%;
+    width: 50%;
+    left: 40%;
+}
+
+.fiandohany2{
+    display: flex;
+    justify-content:space-between ;
+    margin-bottom: 4%;
+}
+
+.vatany{
+    margin: 5%;
+}
