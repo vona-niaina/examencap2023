@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -31,6 +32,30 @@ class TestController extends Controller
         if(!Gate::allows('access-admin')){
             abort('403');
         }
+
+        //ici pour chart
+            //nombre : admis définitif
+            $usersReussitEcrit= Inscription::where('reussitExamen', 'oui')
+                ->whereIn('examen_id', function ($query){
+                    $query->select('id')
+                    ->from('examens')
+                    ->where('typeExamen', 'ECRIT');
+                })
+                ->pluck('user_id');
+             
+            $usersReussitPratique= Inscription::where('reussitExamen', 'oui')
+                ->whereIn('examen_id', function ($query){
+                    $query->select('id')
+                    ->from('examens')
+                    ->where('typeExamen', 'PRATIQUE');
+                })   
+                ->pluck('user_id');
+                
+            $usersAdmisDefinitif= $usersReussitEcrit->intersect($usersReussitPratique);
+            $nombreUsersAdmisDefinitif= count($usersAdmisDefinitif);
+            // dd($nombreUsersAdmisDefinitif);    
+
+
         return view ('adminAcc');
     }
 

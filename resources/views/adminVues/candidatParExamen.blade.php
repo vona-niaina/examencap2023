@@ -91,7 +91,7 @@
                             @endif   
                         </th>
                         <th>Lien Voir plus</th>
-                        <th></th>
+                        {{-- <th></th> --}}
                         <th></th>
                         <th></th>
                         
@@ -128,11 +128,11 @@
                                 <td>{{$inscription->numeroUniqueConvocation}}</td>
                                 <td>{{$inscription->created_at}}</td>
                                 <td> <a href="{{route('admin.profilCandidat', ['idCandidat' =>$inscription->user->id ])}}">Profil candidat</a> </td>
-                                <td> <button type="button" class=" btn-supprimer btn btn-danger tdSuppression" data-toggle="modal" data-target="#confirmDeleteNumUnique_{{$inscription->id}}">Enlever N°unique</button> </td>
+                                {{-- <td> <button type="button" class=" btn-supprimer btn btn-danger tdSuppression" data-toggle="modal" data-target="#confirmDeleteNumUnique_{{$inscription->id}}">Enlever N°unique</button> </td> --}}
 
 
                                 {{-- modal confirm delete numUnique--}}
-                                <div class="modal fade" id="confirmDeleteNumUnique_{{$inscription->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                {{-- <div class="modal fade" id="confirmDeleteNumUnique_{{$inscription->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -145,16 +145,11 @@
                                             <div class="modal-footer">
                                                 <a href="{{route('admin.setNullNumUnique',['idInscription' => $inscription->id]) }}" class=" btn-supprimer btn btn-danger">Supprimer</a> 
                                             
-                                                {{-- <form method="post" action="{{route('admin.setNullNumUnique',['idInscription' => $inscription->id]) }}" >
-                                                    @csrf
-                                                    @method('put')
-                                                    <button type="submit" class=" btn-supprimer btn btn-danger">Supprimer</button> 
-                                                </form> --}}
                                             </div>
                                         </div>
                                     </div>
 
-                                </div>
+                                </div> --}}
                                 {{-- fin modal confirm delete numUnique --}}
 
 

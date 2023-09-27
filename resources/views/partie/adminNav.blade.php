@@ -3,7 +3,7 @@
 
 <!-- The sidebar -->
 <div class="sidenav">
-  <a href="#"><i class="fa fa-fw fa-home"><img src="/mesImages/home_24px.png" alt="" style="width:22px;"></i> Home</a>
+  <a href="{{route('admi')}}"><i class="fa fa-fw fa-home"><img src="/mesImages/home_24px.png" alt="" style="width:22px;"></i> Home</a>
   
   {{-- <a href="#clients"><i class="fa fa-fw fa-user"></i> Candidat</a> --}}
   <a href="{{route('admin.examen')}}"><i class="fa fa-fw fa-user"></i> Examen</a>

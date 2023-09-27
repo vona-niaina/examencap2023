@@ -93,13 +93,19 @@ class InscriptionController extends Controller
 
             $currentDate= now();
 
-            //vérifier si le candidat est encore encours d'examen(le crédit n'est pas 0)
+            //vérifier si le candidat est encore en cours d'examen(le crédit n'est pas 0)
             $isCandidatEnCours = User::where('id', $user_id)
                 ->where('creditCandidat', '>', 0 )
-                ->exists();
-
+                ->first();
+           
+ 
             if($isCandidatEnCours){
-                return to_route('client.index')->withErrors(['message'=> 'Vous êtes déjà en phase de candidature à des sessions']);    
+                $isInscriptionDeCeCandidat= Inscription::where('user_id', $isCandidatEnCours->id)->first();
+               
+                if ($isInscriptionDeCeCandidat) {
+                    return to_route('client.index')->withErrors(['message'=> 'Vous êtes déjà en phase de candidature à des sessions']);    
+                }
+                
             }
 
 
@@ -122,7 +128,7 @@ class InscriptionController extends Controller
                     // dd($isAdmisEcrit);
                     // dd($isAdmisPratique);  
                     
-                //maintenant reidiriger    
+                //maintenant rediriger    
                 if($isAdmisEcrit && $isAdmisPratique){
                     return to_route('client.index')->withErrors(['message'=> 'Vous êtes déjà un enseignant admis définitive']);    
                 }
@@ -171,6 +177,10 @@ class InscriptionController extends Controller
                                 'user_id' => $user_id,
                                 'examen_id' => $examen_id,
                             ]);
+                            //et changer le crédit en 2 
+                            $user->creditCandidat = 2;
+                            $user->save();
+                            
                             return to_route('client.index')->with('success', 'Inscription réussie'); 
                         }
 
@@ -189,6 +199,10 @@ class InscriptionController extends Controller
                             'user_id' => $user_id,
                             'examen_id' => $examen_id,
                         ]);
+                        //et changer le crédit en 2 
+                        $user->creditCandidat = 2;
+                        $user->save();
+
                         return to_route('client.index')->with('success', 'Inscription réussie'); 
                     }
 
@@ -206,6 +220,10 @@ class InscriptionController extends Controller
                         'user_id' => $user_id,
                         'examen_id' => $examen_id,
                     ]);
+                    //et changer le crédit en 2 
+                    $user->creditCandidat = 2;
+                    $user->save();
+
                     return to_route('client.index')->with('success', 'Inscription réussie'); 
                     
                 }   
