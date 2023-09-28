@@ -1,0 +1,99 @@
+.body{
+    background-color: #92A6AE;
+}
+
+@keyframes animation1 {
+    from{
+        opacity: 0;
+        margin-left: -21px;
+    }
+    to{
+        opacity: 1;
+        margin-left: 0;
+    }
+}
+@keyframes animation2 {
+    from{
+        opacity: 0;
+        margin-top: -21px;
+    }to{
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+
+h1{
+    font-weight: bold;
+    font-size: 350%;
+}
+.contenu{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 6%;
+    padding: 30px 2px;
+}
+
+.partieGauche{
+    width: 45%;
+    height: 70vh;
+    animation: animation1 1s;
+}
+
+.partieDroite{
+    width: 45%;
+    animation: animation2 1s;
+}
+
+.imageDroite{
+    width: 100%;
+    height: 100%;
+}
+
+.btnCreerCompte{
+    color: #04AA6D;
+    background-color: aliceblue ;
+    border: 2px #04AA6D solid;
+    /* width: 80px; */
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: 0.5s;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.btnCreerCompte:hover{
+    /* color: aliceblue;
+    background-color: #04AA6D; */
+    box-shadow: 0 3px 9px 3px silver;
+    transition: 0.5s;
+    
+}
+
+.btnLogin{
+    color: aliceblue;
+    background-color: #04AA6D;
+    padding: 10px 20px;
+    transition: 0.5s;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 4px;
+}
+
+.btnLogin:hover{
+    /* color: #04AA6D;
+    background-color: aliceblue ;
+    border: 2px #04AA6D solid;    
+    text-decoration: none; */
+    box-shadow: 0 3px 9px 3px silver;
+    color: aliceblue;
+    transition: 0.5s;
+    
+}
+
+.soratra{
+    color: #04AA6D;
+}
+
