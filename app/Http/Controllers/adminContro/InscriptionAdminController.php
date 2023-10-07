@@ -10,7 +10,10 @@ use App\Models\Inscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CandidatInscriptionMail;
 use Illuminate\Support\Facades\Schema;
+use App\Jobs\SendInscriptionEffaceMailJob;
 use App\Http\Requests\adminRequest\AffectationZapSalle;
 
 class InscriptionAdminController extends Controller
@@ -504,7 +507,15 @@ class InscriptionAdminController extends Controller
     {
         $inscription = Inscription::findOrFail($idInscription);
         $inscription->delete();
+        // dd($inscription->user);
         
+        // Mail::send(new CandidatInscriptionMail($inscription->user));
+        //job 
+
+        // envoie de mail pour ce delete
+        SendInscriptionEffaceMailJob::dispatch($inscription->user);
+        // dd($inscription);
+        //dispatch(new SendInscriptionEffaceMail($inscription));
 
         return redirect()->back()->with('success', 'Inscription supprimée');
     }//end func

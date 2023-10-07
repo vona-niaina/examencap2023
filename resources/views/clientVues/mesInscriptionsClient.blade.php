@@ -78,8 +78,8 @@
                         <td>{{$inscription?->salle?->numSalle}}</td>
                         <td>{{$inscription?->numeroUniqueConvocation}}</td>
                         <td>{{$inscription->created_at}}</td>
-                        <td> <h3 > <a href="{{ route('client.obtenirConvocation', ['idInscription' =>$inscription->id ]) }}" style="text-decoration: underline">Convocation</a> </h3> </td>
-                        <td> <a href="{{route('client.downloadLePDF', ['idInscription'=>$inscription->id])}}" class="btn btn-primary">Télécharger</a></td>
+                        <td> <h3 > <a href="{{ route('client.obtenirConvocation', ['idInscription' =>$inscription->id, 'idCandidat'=>$inscription->user_id ]) }}" style="text-decoration: underline">Convocation</a> </h3> </td>
+                        <td> <a href="{{route('client.downloadLePDF', ['idInscription'=>$inscription->id, 'idCandidat'=>$inscription->user_id])}}" class="btn btn-primary">Télécharger</a></td>
                         {{-- <td> <button class="btn btn-secondary">Modifier</button> </td>
                         <td> <button class=" btn-supprimer btn btn-danger">Supprimer</button> </td> --}}
                     </tr>

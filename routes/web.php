@@ -123,13 +123,13 @@ Route::prefix('client')->name('client.')->middleware(['auth', 'checkrole:0'])->g
     Route::get('/mesInscription', [InscriptionController::class, 'mesInscriptionsClient'])->name('mesInscriptionsClient');
 
     // getConvocationdeL'examen inscriptions
-    Route::get('/obtenirConvocation/{idInscription}',[InscriptionController::class, 'obtenirConvocation'])->name('obtenirConvocation');
+    Route::get('/obtenirConvocation/{idInscription}/{idCandidat}',[InscriptionController::class, 'obtenirConvocation'])->name('obtenirConvocation');
 
     //createPDF
     Route::get('/AfficherConvocation/{idInscription}',[InscriptionController::class, 'createPDF'])->name('createPDF');
 
     //down PDF
-    Route::get('/TelechargerConvocation/{idInscription}',[InscriptionController::class, 'downloadLePDF'])->name('downloadLePDF');
+    Route::get('/TelechargerConvocation/{idInscription}/{idCandidat}',[InscriptionController::class, 'downloadLePDF'])->name('downloadLePDF');
 });
 
 //**********************************fin client *********************************************************************** */

@@ -52,11 +52,6 @@
             margin-left: 5%
         }
 
-        .sonia1{
-            float: right;
-            margin-right: 5%;
-        }
-
         .etoile{
             margin-left: 25%;
         }
@@ -64,6 +59,29 @@
         .fiandohany h3, .fiandohanyHavia h3, .fiandohanyHavanana h3{
             text-align: center;
         }
+
+        .fiafarany{
+            /* display: flex; */
+            width: 100%;
+            /* justify-content:space-around ;
+            align-items: flex-start; */
+            margin-bottom: 4%;
+        }
+        
+        .sonia1{
+            float: right;
+            margin-right: 5%;
+        }
+
+        .qrCodeConvoc{
+            float: left;
+            width: 50%;
+            /* border: 2px blue solid; */
+            margin-left: 7%;
+            margin-right: 2%
+        }
+
+
     </style>
 
     <script src="/bootstr/jsBootstr/jquery-3.6.0.min.js"></script>
@@ -122,18 +140,27 @@
                     </p>
                 </div>
 
-                <div class="sonia1">
-                    <p>Fait à Ambositra * * </p>
-                <p>Le Vice-Président de l'Organisation Générale</p>
-                
-                <p>RAHERIMANDIMBY Andry Tahiriniaina</p>
+                <div class="fiafarany">
+                    <div class="qrCodeConvoc">
+                        {{-- {!! QrCode::size(150)->generate('fandaminana')  !!} --}}
+                        {{-- <img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(120)->generate('filaminanabe')) }}" alt=""> --}}
+                        <img src="data:image/png;base64,{{ base64_encode($qrCode) }}" alt="Code Qr du candidat">
+                    </div>
+    
+                    <div class="sonia1">
+                        <p>Fait à Ambositra * * </p>
+                    <p>Le Vice-Président de l'Organisation Générale</p>
+                    
+                    <p>RAHERIMANDIMBY Andry Tahiriniaina</p>
+                    </div>
                 </div>
+                
 
                 
             </div>
         {{-- @endforeach --}}
 
-        <a href="{{route('client.downloadLePDF', ['idInscription'=>$inscription->id])}}" class="btn btn-primary">Télécharger</a>
+        <a href="{{route('client.downloadLePDF', ['idInscription'=>$inscription->id, 'idCandidat'=>$inscription->user_id])}}" class="btn btn-primary">Télécharger</a>
        
 
     </div>  

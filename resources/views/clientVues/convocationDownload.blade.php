@@ -51,17 +51,33 @@
                 margin-left: 5%
             }
 
-            .sonia1{
-                float: right;
-                margin-right: 5%;
-            }
-
             .etoile{
                 margin-left: 25%;
             }
             
             .fiandohany h2, .fiandohanyHavia h4, .fiandohanyHavanana h4, .etoile{
                 text-align: center;
+            }
+
+            .fiafarany{
+                /* display: flex; */
+                width: 100%;
+                /* justify-content:space-around ;
+                align-items: flex-start; */
+                margin-bottom: 4%;
+            }
+            
+            .sonia1{
+                float: right;
+                margin-right: 5%;
+            }
+
+            .qrCodeConvoc{
+                float: left;
+                width: 50%;
+                /* border: 2px blue solid; */
+                margin-left: 7%;
+                margin-right: 2%
             }
 
         </style>
@@ -120,19 +136,24 @@
                     </p>
                 </div>
 
-                <div class="sonia1">
-                    <p>Fait à Ambositra * * </p>
+                <div class="fiafarany">
+                    <div class="qrCodeConvoc">
+                        {{-- <img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(120)->generate('filaminanabe')) }}" alt=""> --}}
+                        <img src="data:image/png;base64,{{ base64_encode($qrCode) }}" alt="Code Qr du candidat">
+                    </div>
+    
+                    <div class="sonia1">
+                        <p>Fait à Ambositra * * </p>
                     <p>Le Vice-Président de l'Organisation Générale</p>
-                
+                    
                     <p>RAHERIMANDIMBY Andry Tahiriniaina</p>
+                    </div>
                 </div>
 
                 
             </div>
         {{-- @endforeach --}}
 
-        
-       
 
     </div>  
         

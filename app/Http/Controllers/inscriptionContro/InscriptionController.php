@@ -15,6 +15,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\InscriptionRequest;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class InscriptionController extends Controller
 {
@@ -244,19 +245,60 @@ class InscriptionController extends Controller
 
     
     //convocation
-    public function obtenirConvocation($idInscription)
+    public function obtenirConvocation($idInscription, $idCandidat)
     {
         $inscription= Inscription::findOrFail($idInscription);
+        $candidat= User::findOrFail($idCandidat);
 
         //vérifier d'abord s'il a numUnique et salle
         if($inscription->numeroUniqueConvocation == null || $inscription->salle_id == null ){
             return redirect()->back()->with(['error'=> 'Vous n\'avez pas encore de salle ou de numéro unique, veuillez attendre ']);
         }
 
+        //codeQr
+        $candidatData= [
+            'Centre' => $inscription->salle->centre->nomCentre ,
+            'EmplacementCentre' => $inscription->salle->centre->emplacementCentre,
+            'Salle' => $inscription->salle->numSalle,
+            'Examen' => $inscription->examen->typeExamen,
+            'AnneeExamen' => $inscription->examen->anneeExamen,
+            'Nom' => $candidat->name,
+            'Prenom' => $candidat->prenom,
+            'CIN' => $candidat->cinEnseignant
+        ];
+
+        // lien vers profil du candidat
+        // $profilLink = 'http://127.0.0.1:8000/verification/profilCandidat/'. $candidat->id  ;
+        $profilLink = url('http://127.0.0.1:8000/')  ;
+        
+        // les données et le lien
+        $qrData = [
+            'Candidat' => $candidatData,
+            // 'Profil' => $profilLink
+        ];
+
+        // formatez les données
+        // $formattedData = "EXAMEN: ". $candidatData['Examen'] . " " . $candidatData['AnneeExamen'] ; 
+        // "\nCENTRE: " . $candidatData['Centre'] . " à " . $candidatData['EmplacementCentre'] . "SALLE N°: " . $candidatData['Salle'] . 
+        // "\nNOM: " . $candidatData['Nom'] . " " . $candidatData['Prenom'] . 
+        // "\nCIN: " . $candidatData['CIN'];
+
+        
+        //convertir en JSON
+        $jsonData = json_encode($qrData, JSON_PRETTY_PRINT);
+        
+        // Générer le code QR à partir de ces données 
+        // $qrCode = QrCode::size(130)->generate($jsonData);
+        $qrCode = QrCode::format('png')->size(210)->generate($jsonData);
+        // dd($qrCode);
+        
+
         // dd($inscription);
         return view('clientVues.convocation', [
             'inscription' => $inscription,
-            'idInscription' => $idInscription
+            'idInscription' => $idInscription,
+            'qrCode' => $qrCode,
+            'candidat' => $candidat
         ]);
     }//end func
 
@@ -267,6 +309,7 @@ class InscriptionController extends Controller
 
         //share data to view
         $inscription= Inscription::findOrFail($idInscription);
+        
 
         //vérifier d'abord s'il a numUnique et salle
         if($inscription->numeroUniqueConvocation == null || $inscription->salle_id == null ){
@@ -288,16 +331,46 @@ class InscriptionController extends Controller
     }//end func
 
 
-    public function downloadLePDF($idInscription)
+    public function downloadLePDF($idInscription, $idCandidat)
     {
         $inscription= Inscription::findOrFail($idInscription);
+        $candidat= User::findOrFail($idCandidat);
 
         //vérifier d'abord s'il a numUnique et salle
         if($inscription->numeroUniqueConvocation == null || $inscription->salle_id == null ){
             return redirect()->back()->with(['error'=> 'Vous n\'avez pas encore de salle ou de numéro unique, veuillez attendre ']);
         }
+
+        //codeQr
+        $candidatData= [
+            'Centre' => $inscription->salle->centre->nomCentre ,
+            'EmplacementCentre' => $inscription->salle->centre->emplacementCentre,
+            'Salle' => $inscription->salle->numSalle,
+            'Examen' => $inscription->examen->typeExamen,
+            'AnneeExamen' => $inscription->examen->anneeExamen,
+            'Nom' => $candidat->name,
+            'Prenom' => $candidat->prenom,
+            'CIN' => $candidat->cinEnseignant
+        ];
+
+        // les données et le lien
+        $qrData = [
+            'Candidat' => $candidatData,
+            // 'Profil' => $profilLink
+        ];
+
+
+        //convertir en JSON
+        $jsonData = json_encode($qrData, JSON_PRETTY_PRINT);
+        
+        // Générer le code QR à partir de ces données 
+        // $qrCode = QrCode::size(130)->generate($jsonData);
+        $qrCode = QrCode::format('png')->size(230)->generate($jsonData);
+        // dd($qrCode);
+
+
         // landscape
-        return Pdf::loadView('clientVues.convocationDownload', ['inscription'=> $inscription])->setPaper('a4', 'portrait')->download('convoc/telechargement.pdf');
+        return Pdf::loadView('clientVues.convocationDownload', ['inscription'=> $inscription, 'qrCode' => $qrCode])->setPaper('a4', 'portrait')->download('convoc/telechargement.pdf');
         // return Pdf::loadView('clientVues.convocationDownload', ['inscription'=>$inscription])->save('convocation/convocation.pdf');
         // $pdf= PDF::loadView('clientVues.convocation', ['inscription'=>$inscription]);
         // return Pdf::loadView('clientVues.convocation', ['inscription'=>$inscription])->save('convo/convoocation.pdf');
