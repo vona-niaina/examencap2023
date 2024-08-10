@@ -20,13 +20,57 @@
         <div class="fizarana2">
             <h1 class="welcome-admin">Welcome Admin</h1>
 
-        
+            {{-- simple statistique --}}
+            <div class="simpleStatistique">
+                <div class="inscriptionTotal nombreStat card">
+                    <h4>Inscriptions</h4>
+                    <h2>{{ $inscriptionTotal }} </h2>
+                </div>
+
+                <div class="nombreUsersAvecInscriptions nombreStat">
+                    <h4>Enseignants Inscrits</h4>
+                    <h2>{{ $nombreUsersAvecInscriptions }}</h2> 
+                </div>
+
+                <div class="nombreUsersSansInscriptions nombreStat">
+                    <h4>Enseignants non inscrits</h4>
+                    <h2>{{ $nombreUsersSansInscriptions }}</h2> 
+                </div>
+
+                <div class="nombreUsersAdmisDefinitif nombreStat">
+                    <h4>Admis définitives</h4>
+                <h2>{{ $nombreUsersAdmisDefinitif }}</h2>
+                </div>
+            </div>
+            
+
+            <div class="chartStat">
+                {{-- chart pourcentageAdmis définitive --}}
+                <div class="poucentageParCisco card" >
+                    <h2>% Admis définitives par CISCO</h2>
+                    <canvas id="ciscoChart" data-cisco-data="{{ json_encode($data) }}" aria-label="chart" role="img"></canvas>
+
+                </div>
+
+                {{-- chart pie ecrit pratique --}}
+                <div class="ecritPratique card" >
+                    <h4>% de réussite d'Ecrit et Pratique</h4>
+                    <h1 id="pourcentageReussiteEcrit" style="display: none">{{$pourcentageReussiteEcrit}}</h1>
+                    <h1 id="pourcentageReussitePratique" style="display: none">{{$pourcentageReussitePratique}}</h1>
+                    <canvas id="pieCanvas" aria-label="chart" role="img"></canvas>
+
+                </div>   
+            </div>
+             
+
             
         </div>
     </div>
   
     
+    <script src="bootstr/jsBootstr/chart.min.js"></script>
     <script src="js/adminJs/adminNav.js"></script>
+    <script src="js/adminJs/chartIndex.js"></script>
     <script src="bootstr/jsBootstr/bootstrap.min.js"></script>
 </body>
 </html>

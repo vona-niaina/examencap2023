@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Cisco;
 use App\Models\Inscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -87,7 +88,9 @@ class TestController extends Controller
             $nombreUsersAvecInscriptions= count($usersAvecInscriptions);
             
             //users sans inscriptions
-            $nombreUsersSansInscriptions= User::whereNotIn('id', $usersAvecInscriptions)->count();
+            $nombreUsersSansInscriptions= User::whereNotIn('id', $usersAvecInscriptions)
+                                                ->where('admin', 0)
+                                                ->count();
             
             // %reussitParCisco: bar 
             //
@@ -130,14 +133,109 @@ class TestController extends Controller
             }
             // dd($pourcentagesReussite);
 
+
+
             //users qui ont réussi définitivement par cisco(%sur les users qui ont une inscription sur ce cisco)
-            
+            $ciscoss= Cisco::all();
+
+            //tableau pour stocker les résultats par Cisco
+            $resultatsParCisco= [];
+
+            foreach ($ciscoss as $cisc) {
+                //comptez le nombre d'users inscrits à ce cisco
+                $nombreInscriptionCisco= DB::table('ciscos')
+                    ->join('zaps', 'ciscos.id', '=', 'zaps.cisco_id')
+                    ->join('etabs', 'zaps.id', '=', 'etabs.zap_id')
+                    ->join('users', 'etabs.id', '=', 'users.etab_id')
+                    ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+                    ->where('ciscos.id', $cisc->id)
+                    ->distinct('users.id')
+                    ->count();
+
+                //comptez le nombre d'user admis définitivement dans ce cisco
+                $nombreAdmisDefinitivement= DB::table('ciscos')
+                    ->join('zaps', 'ciscos.id', '=', 'zaps.cisco_id')
+                    ->join('etabs', 'zaps.id', '=', 'etabs.zap_id')
+                    ->join('users', 'etabs.id', '=', 'users.etab_id')
+                    ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+                    ->join('examens', 'inscriptions.examen_id', '=', 'examens.id')
+                    ->where('ciscos.id', $cisc->id)
+                    ->where('examens.typeExamen', 'ECRIT')
+                    ->where('inscriptions.reussitExamen', 'oui')
+                    ->whereIn('users.id', function ($query) use ($cisc){
+                        // sous requete pour trouver les users admis définitivement pour le type Pratique
+                        $query->select('users.id')
+                            ->from('users')
+                            ->join('etabs', 'users.etab_id', '=', 'etabs.id')
+                            ->join('zaps', 'etabs.zap_id', '=', 'zaps.id')
+                            ->join('ciscos', 'zaps.cisco_id', '=', 'ciscos.id')
+                            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+                            ->join('examens', 'inscriptions.examen_id', '=', 'examens.id')
+                            ->where('ciscos.id', $cisc->id)
+                            ->where('examens.typeExamen', 'PRATIQUE')
+                            ->where('inscriptions.reussitExamen', 'oui');
+
+                    })
+                    ->count();
+
+                // calculer le pourcentage pour ce cisco
+                $pourcentageAdmisDefinitivement= $nombreInscriptionCisco > 0 ? ($nombreAdmisDefinitivement / $nombreInscriptionCisco) * 100 : 0;
+
+                // stocker le résultat dans le tableau
+                $resultatsParCisco[] = [
+                    'cisco' => $cisc->nomCisco,
+                    'userInscrit' => $nombreInscriptionCisco,
+                    'nombreAdmisDefinitivement' => $nombreAdmisDefinitivement,
+                    'pourcentage' => $pourcentageAdmisDefinitivement
+                ];
+                    
+            }
+            // dd($resultatsParCisco);
+
 
             //reussitParAnnee: line
+        
+            //pourcentage réussit ecrit pratique
+
+            // total ecrit inscriptions
+            $totalInscriptionsEcrit= DB::table('inscriptions')
+                ->join('examens','inscriptions.examen_id', '=', 'examens.id')
+                ->where('examens.typeExamen', 'ECRIT')
+                ->count();
             
+            // total pratique inscriptions
+            $totalInscriptionsPratique= DB::table('inscriptions')
+                ->join('examens', 'inscriptions.examen_id', '=', 'examens.id')
+                ->where('examens.typeExamen', 'PRATIQUE')
+                ->count();
+            
+            //nbre inscription réussie à l'examen écrit
+            $inscriptionsReussitesEcrit= DB::table('inscriptions')
+                ->join('examens','inscriptions.examen_id', '=', 'examens.id')
+                ->where('examens.typeExamen', 'ECRIT')
+                ->where('inscriptions.reussitExamen', 'oui')
+                ->count();
+              
+            //nbre inscription réussie à l'examen pratique
+            $inscriptionsReussitesPratique= DB::table('inscriptions')
+                ->join('examens','inscriptions.examen_id', '=', 'examens.id')
+                ->where('examens.typeExamen', 'PRATIQUE')
+                ->where('inscriptions.reussitExamen', 'oui')
+                ->count();    
+                
+            // calcul de pourcentage de réussite
+            $pourcentageReussiteEcrit = $totalInscriptionsEcrit > 0 ? ($inscriptionsReussitesEcrit /$totalInscriptionsEcrit) * 100 : 0;
+            $pourcentageReussitePratique = $totalInscriptionsPratique > 0 ? ($inscriptionsReussitesPratique /$totalInscriptionsPratique) * 100 : 0;
 
-
-        return view ('adminAcc');
+        return view ('adminAcc', [
+            'data' => $resultatsParCisco,
+            'inscriptionTotal' => $usersInscritsTotal,
+            'nombreUsersAvecInscriptions' => $nombreUsersAvecInscriptions,
+            'nombreUsersSansInscriptions' => $nombreUsersSansInscriptions,
+            'nombreUsersAdmisDefinitif' => $nombreUsersAdmisDefinitif,
+            'pourcentageReussiteEcrit' => $pourcentageReussiteEcrit,
+            'pourcentageReussitePratique' => $pourcentageReussitePratique
+        ]);
     }//end func
 
 

@@ -8,3 +8,51 @@
     text-align: center;
     color: #f1f1f1;
 }
+
+.simpleStatistique{
+    display: flex;
+    flex-wrap: wrap;
+    width: 98%;
+    margin: 1.2% 0.5% ;
+    /* border: 4px solid blue; */
+    justify-content: space-around;
+}
+
+.simpleStatistique h2, .simpleStatistique h4{
+    text-align: center;
+    font-weight: bold;
+}
+
+.simpleStatistique h4{
+    overflow-wrap: break-word;
+}
+
+.nombreStat{
+    width: 22%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 1.2%;
+}
+
+.chartStat{
+    display: flex;
+    justify-content: space-around;
+}
+
+.poucentageParCisco{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 1%;
+    width: 50%; 
+    /* margin:auto; */
+}
+
+.poucentageParCisco h2{
+    font-weight: bold;
+    text-align: center;
+    padding: 2%;
+}
+
+.ecritPratique{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 1%;
+    width: 30%;
+}
