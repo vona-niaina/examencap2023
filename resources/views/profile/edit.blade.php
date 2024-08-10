@@ -13,6 +13,20 @@
                 </div>
             </div>
 
+            <div class="p-2 sm:p-5 bg-white shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    <header>
+                        <h2 class="text-lg font-medium text-gray-900">
+                            {{ __('Photo d\'identité ') }}
+                        </h2>
+                    </header>
+                    <img src="{{ Storage::url($user->photoIdentite) }}" alt="diplomeBacc" style="width: 60%">
+                </div>
+            </div>
+
+        @if ($user->admin == 0)
+            
+          
             @if ($user->diplomeBacc != null)
                 <div>
                     <x-input-label for="dateObtentionBacc" :value="__('dateObtentionBacc')" />
@@ -74,6 +88,7 @@
             @else
             <h1> Pas de certificatAdministratif </h1>
             @endif
+        @endif         
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">

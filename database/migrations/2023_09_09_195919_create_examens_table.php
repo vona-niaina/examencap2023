@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('finExamen');
             $table->date('debutInscription')->nullable();
             $table->date('finInscription')->nullable();
+            $table->string('cloture')->default('0');
 
             $table->timestamps();
         });

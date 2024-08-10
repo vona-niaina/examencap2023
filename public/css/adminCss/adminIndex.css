@@ -45,7 +45,7 @@
     /* margin:auto; */
 }
 
-.poucentageParCisco h2{
+.poucentageParCisco h2, .ecritPratique h4{
     font-weight: bold;
     text-align: center;
     padding: 2%;
@@ -54,5 +54,5 @@
 .ecritPratique{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 1%;
-    width: 30%;
+    width: 38%;
 }

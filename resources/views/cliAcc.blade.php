@@ -65,12 +65,15 @@
                             <div class="container">
                                 <h2>Examen {{$examen->typeExamen}} {{$examen->anneeExamen}} </h2>
                                 <h4 class="title">De {{$examen->debutExamen}} à {{$examen->finExamen}}</h4>
-                                <h4>Inscription: de <span class="badge badge-secondary"> {{$examen->debutInscription}}</span> à <span class="badge badge-secondary">{{$examen->finInscription}}</span>   </h4>
-                                <p></p>
+                                
                                 @if ($examen->typeExamen == 'ECRIT')
+                                    <h4>Inscription: de <span class="badge badge-secondary"> {{$examen->debutInscription}}</span> à <span class="badge badge-secondary">{{$examen->finInscription}}</span>   </h4>
+                                    <p></p>
                                     <p> <a class="btn btn-dark btn-lg btn-block" href="{{route('client.inscriptionCandidat', ['user_id' => Auth::user()->id, 'examen_id' => $examen->id]) }}">S'inscrire</a> </p>
                                 @else
                                 {{-- <p> <a class="btn btn-dark btn-lg btn-block" href="{{route('client.inscriptionCandidat', ['user_id' => Auth::user()->id, 'examen_id' => $examen->id]) }}">S'inscrire</a> </p> --}}
+                                    <h4>Le responsable s'occupe des inscriptions des candidats </h4>
+                                    <p></p>
                                     <p><button class="btn btn-secondary btn-lg btn-block" disabled>Inscription auto</button></p>
                                 @endif
                               

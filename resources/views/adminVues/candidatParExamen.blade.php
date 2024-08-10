@@ -52,6 +52,33 @@
                         
                         <a href="{{route('admin.affecterParZap', ['idExamen'=>$examens->id])}}" id="affecterParZap" class="btn btn-primary">Affecter par Zap</a>  
                         <a href="{{route('admin.genererNumUnique', ['idExamen'=>$examens->id])}}" id="genererNumUnique" class="btn btn-primary">Générer N° unique</a>  
+                        {{-- <a href="{{route('admin.cloturerExamen', ['idExamen'=>$examens->id])}}" id="cloturerExamen" class="btn btn-danger">Cloturer</a> --}}
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#btnCloturer">Cloturer</button>
+
+                        {{-- modal confirm cloturer--}}
+                        <div class="modal fade" id="btnCloturer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel">Demande de confirmation</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Etes-vous sûr de vouloir clôturer les opérations sur cet examen?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{{route('admin.cloturerExamen', ['idExamen'=>$examens->id])}}" method="post">
+                                            @csrf
+                                            <button type="submit" id="cloturerExamen" class=" btn-supprimer btn btn-danger">Cloturer</button>
+                                        </form>   
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {{-- fin modal confirm cloturer --}}
+
                     </div>
                       
                 @else
@@ -168,7 +195,7 @@
                                                 Etes-vous sûr de vouloir détacher le candidat de la salle?
                                             </div>
                                             <div class="modal-footer">
-                                                <a href="{{route('admin.detacherDeSalle',['idInscription' => $inscription->id]) }}" class=" btn-supprimer btn btn-danger">Supprimer</a> 
+                                                <a href="{{route('admin.detacherDeSalle',['idInscription' => $inscription->id, 'idExamen' => $examens->id ]) }}" class=" btn-supprimer btn btn-danger">Supprimer</a> 
                                             
                                                 {{-- <form method="post" action="{{route('admin.setNullNumUnique',['idInscription' => $inscription->id]) }}" >
                                                     @csrf
@@ -197,7 +224,7 @@
                                                 Etes-vous sûr de vouloir supprimer son inscription à cet examen?
                                             </div>
                                             <div class="modal-footer">
-                                                <a href="{{route('admin.deleteInscription',['idInscription' => $inscription->id]) }}" class=" btn-supprimer btn btn-danger">Supprimer</a> 
+                                                <a href="{{route('admin.deleteInscription',['idInscription' => $inscription->id, 'idExamen' => $examens->id]) }}" class=" btn-supprimer btn btn-danger">Supprimer</a> 
                                             </div>
                                         </div>
                                     </div>

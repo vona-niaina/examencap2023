@@ -18,7 +18,7 @@
         </div>
         
         <div class="fizarana2">
-            <h1 class="welcome-admin">Welcome Admin</h1>
+            <h1 class="welcome-admin">Statistique</h1>
 
             {{-- simple statistique --}}
             <div class="simpleStatistique">

@@ -108,7 +108,7 @@
                 <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
-                    <th>id</th>
+                    {{-- <th>id</th> --}}
                     <th>Code CISCO</th>
                     <th>Nom CISCO</th>
                     <th></th>
@@ -119,7 +119,7 @@
                 <tbody>
                     @forelse ($ciscos as $ciscos)
                         <tr>
-                            <td>{{$ciscos->id}}</td>
+                            {{-- <td>{{$ciscos->id}}</td> --}}
                             <td>{{$ciscos->codeCisco}}</td>
                             <td>{{$ciscos->nomCisco}}</td>
                             {{-- <td> <a href="{{route('admin.versModificationCisco', ['idCisco' => $ciscos->id])}}" class="btn btn-secondary">Modifier</a> </td> --}}

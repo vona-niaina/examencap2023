@@ -250,6 +250,13 @@ class InscriptionController extends Controller
         $inscription= Inscription::findOrFail($idInscription);
         $candidat= User::findOrFail($idCandidat);
 
+        //vérifier si l'examen est déjà cloturé
+        $idExamen= $inscription->examen_id;
+        $examenCloture= Examen::findOrFail($idExamen);
+        if($examenCloture->cloture == '0'){
+            return redirect()->back()->with('error', 'La distrubition de salle et numéro unique sont encore en cours, veuillez réessayer plus tard');
+        }
+
         //vérifier d'abord s'il a numUnique et salle
         if($inscription->numeroUniqueConvocation == null || $inscription->salle_id == null ){
             return redirect()->back()->with(['error'=> 'Vous n\'avez pas encore de salle ou de numéro unique, veuillez attendre ']);
@@ -335,6 +342,13 @@ class InscriptionController extends Controller
     {
         $inscription= Inscription::findOrFail($idInscription);
         $candidat= User::findOrFail($idCandidat);
+
+        //vérifier si l'examen est déjà cloturé
+        $idExamen= $inscription->examen_id;
+        $examenCloture= Examen::findOrFail($idExamen);
+        if($examenCloture->cloture == '0'){
+            return redirect()->back()->with('error', 'La distrubition de salle et numéro unique sont encore en cours, veuillez réessayer plus tard');
+        }
 
         //vérifier d'abord s'il a numUnique et salle
         if($inscription->numeroUniqueConvocation == null || $inscription->salle_id == null ){

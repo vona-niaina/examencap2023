@@ -76,8 +76,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkrole:1'])->gro
      //candidat par examen
      Route::get('/candidatParExamen/{idExamen}', [InscriptionAdminController::class, 'candidatParExamen'])->name('candidatParExamen');
      Route::get('/enleverNumeroUnique/{idInscription}', [InscriptionAdminController::class, 'setNullNumUnique'])->name('setNullNumUnique'); 
-     Route::get('/detacherDeSalle/{idInscription}', [InscriptionAdminController::class, 'detacherDeSalle'])->name('detacherDeSalle'); 
-     Route::get('/deleteInscription/{idInscription}', [InscriptionAdminController::class, 'deleteInscription'])->name('deleteInscription'); 
+     Route::get('/detacherDeSalle/{idInscription}/{idExamen}', [InscriptionAdminController::class, 'detacherDeSalle'])->name('detacherDeSalle'); 
+     Route::get('/deleteInscription/{idInscription}/{idExamen}', [InscriptionAdminController::class, 'deleteInscription'])->name('deleteInscription'); 
      //fin candidat par examen  
 
      //profil candidat
@@ -102,6 +102,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkrole:1'])->gro
      //importer candidat pratique  
      Route::get('/importerCandidatPratique/{idExamen}', [InscriptionAdminController::class, 'importerCandidatPratique'])->name('importerCandidatPratique');
      //fin importer candidat pratique
+
+     //cloturer examen
+     Route::post('/cloturerExamen/{idExamen}', [InscriptionAdminController::class, 'cloturerExamen'])->name('cloturerExamen');
+     //fin cloturer examen
 
 });
 

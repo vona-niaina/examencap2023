@@ -302,6 +302,11 @@ class InscriptionAdminController extends Controller
     //générer num unique
     public function genererNumUnique(Request $request,$idExamen)
     {
+        //vérifier si l'examen est déjà cloturé
+        $examenCloture = Examen::findOrFail($idExamen);
+        if($examenCloture->cloture == '1'){
+            return redirect()->back()->with('error', 'Les actions sur cet examen sont déjà clôturées ');
+        }
 
         //vérifier d'abord si tous les candidats ont déjà une salle
         $inscriptionVer= Inscription::where('examen_id', $idExamen)
@@ -345,6 +350,16 @@ class InscriptionAdminController extends Controller
     //gestionResultat examen
     public function modifierResultat(Request $request, $idExamen)
     {
+
+        //vérifier que les inscriptions ont déjà une salle et un numUnique
+        $inscriptionTout= Inscription::all();
+        foreach ($inscriptionTout as $inscriptionRes) {
+            if($inscriptionRes->salle_id == null || $inscriptionRes->numeroUniqueConvocation == null){
+                return redirect()->back()->with('error', 'Les candidats doivent d\'abord avoir de salle et de numéro unique ');
+            }
+        }
+        
+
         //typeExamen
         // $examen= Examen::where('id',$idExamen)->get();
         $examen= Examen::findOrFail($idExamen);
@@ -437,6 +452,12 @@ class InscriptionAdminController extends Controller
     // importerCandidatPratique
     public function importerCandidatPratique($idExamen)
     {
+        //vérifier si l'examen est déjà cloturé
+        $examenCloture = Examen::findOrFail($idExamen);
+        if($examenCloture->cloture == '1'){
+            return redirect()->back()->with('error', 'Les actions sur cet examen sont déjà clôturées ');
+        }
+
         //mettre en condition s'il en encore de résultat en cours dans les inscriptions
         $inscriptionResultat= Inscription::where('reussitExamen', 'En cours')
             ->where('examen_id', '!=', $idExamen)
@@ -491,8 +512,14 @@ class InscriptionAdminController extends Controller
     }//end func
 
     // détacherDeSalle
-    public function detacherDeSalle($idInscription)
+    public function detacherDeSalle($idInscription, $idExamen)
     {
+         //vérifier si l'examen est déjà cloturé
+         $examenCloture = Examen::findOrFail($idExamen);
+         if($examenCloture->cloture == '1'){
+             return redirect()->back()->with('error', 'Les actions sur cet examen sont déjà clôturées ');
+         }
+
         $inscription = Inscription::findOrFail($idInscription);
         $inscription->salle_id = null;
         $inscription->numeroUniqueConvocation = null;
@@ -503,8 +530,14 @@ class InscriptionAdminController extends Controller
 
     // deleteInscription
 
-    public function deleteInscription($idInscription)
+    public function deleteInscription($idInscription, $idExamen)
     {
+        //vérifier si l'examen est déjà cloturé
+        $examenCloture = Examen::findOrFail($idExamen);
+        if($examenCloture->cloture == '1'){
+            return redirect()->back()->with('error', 'Les actions sur cet examen sont déjà clôturées ');
+        }
+
         $inscription = Inscription::findOrFail($idInscription);
         $inscription->delete();
         // dd($inscription->user);
@@ -518,6 +551,28 @@ class InscriptionAdminController extends Controller
         //dispatch(new SendInscriptionEffaceMail($inscription));
 
         return redirect()->back()->with('success', 'Inscription supprimée');
+    }//end func
+
+
+    //cloturer examen
+    public function cloturerExamen($idExamen)
+    {
+
+        $examen= Examen::findOrFail($idExamen);
+        // $countEffectif= $examens->inscription
+        $inscription= $examen->inscriptions()->get();
+        //vérifier si les candidats ont déjà salle et numUnique
+        foreach ($inscription as $inscriptions) {
+            if($inscriptions->salle_id == null || $inscriptions->numeroUniqueConvocation == null){
+                return redirect()->back()->with('error', 'Les candidats doivent d\'abord avoir de salle et de numéro unique ');
+            }
+        }
+
+        //update
+       
+        $examen->cloture = 1;
+        $examen->save();
+        return redirect()->back()->with('success', 'Opérations sur les examens clôturées');
     }//end func
 
 

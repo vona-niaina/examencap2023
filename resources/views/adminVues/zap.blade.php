@@ -117,7 +117,7 @@
                 <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
-                    <th>id</th>
+                    {{-- <th>id</th> --}}
                     <th>Code ZAP</th>
                     <th>Nom ZAP</th>
                     <th>Son Cisco</th>
@@ -129,7 +129,7 @@
                 <tbody>
                     @forelse ($zaps as $zap)
                         <tr>
-                            <td>{{$zap->id}}</td>
+                            {{-- <td>{{$zap->id}}</td> --}}
                             <td>{{$zap->codeZap}}</td>
                             <td>{{$zap->nomZap}}</td>
                             <td>{{$zap->cisco?->nomCisco}}</td>
