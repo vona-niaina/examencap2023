@@ -1,0 +1,25 @@
+# version: '3.8'
+
+# services:
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     container_name: moncontainer23
+#     working_dir: /home/exempledocker
+#     volumes:
+#       - .:/home/exempledocker
+#     ports:
+#       - "8002:8000"
+#     depends_on:
+#       - db
+
+#   db:
+#     image: mysql:latest
+#     container_name: mysqlcontainer1
+#     ports:
+#       - "3307:3306"
+#     environment:
+#       MYSQL_DATABASE: examencap
+#       MYSQL_ROOT_PASSWORD: password
+  
